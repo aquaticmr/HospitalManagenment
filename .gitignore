@@ -1,0 +1,21 @@
+# Environments
+.env
+
+# Node
+node_modules/
+dist/
+build/
+
+# IDE
+.idea/
+.vscode/
+
+# Maven
+target/
+*.jar
+*.war
+
+# Logs
+logs
+*.log
+npm-debug.log*

@@ -1,0 +1,15 @@
+# Environments
+.env
+
+# Maven
+target/
+*.jar
+*.war
+
+# IDE
+.idea/
+.vscode/
+
+# Logs
+logs
+*.log

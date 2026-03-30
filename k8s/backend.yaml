@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: DOCKERHUB_USERNAME/hospital-backend:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: JWT_SECRET
+              value: "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970"
+            - name: SPRING_DATASOURCE_URL
+              value: "SUPABASE_URL_PLACEHOLDER"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "SUPABASE_USERNAME_PLACEHOLDER"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "SUPABASE_PASSWORD_PLACEHOLDER"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          readinessProbe:
+            httpGet:
+              path: /api/auth/login
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: backend
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
