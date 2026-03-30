@@ -28,13 +28,7 @@ spec:
               value: "SUPABASE_USERNAME_PLACEHOLDER"
             - name: SPRING_DATASOURCE_PASSWORD
               value: "SUPABASE_PASSWORD_PLACEHOLDER"
-          resources:
-            requests:
-              memory: "256Mi"
-              cpu: "250m"
-            limits:
-              memory: "512Mi"
-              cpu: "500m"
+
 
 ---
 apiVersion: v1
