@@ -41,7 +41,7 @@ jobs:
           push: true
           tags: ${{ env.FRONTEND_IMAGE }}:latest
           build-args: |
-            VITE_API_URL=http://backend-service
+            VITE_API_URL=http://aadb742ba841b43c89907d618ead6e08-1189398149.us-east-1.elb.amazonaws.com
 
       # ─── AWS EKS ─────────────────────────────────
       - name: Configure AWS credentials
