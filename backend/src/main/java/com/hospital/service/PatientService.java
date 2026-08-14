@@ -45,7 +45,7 @@ public class PatientService {
     public List<Map<String, Object>> getAvailableSlots(Long doctorId) {
         User doctor = userRepository.findById(doctorId)
                 .orElseThrow(() -> new RuntimeException("Doctor not found"));
-        return timeSlotRepository.findByDoctor(doctor).stream()
+        return timeSlotRepository.findByDoctorAndIsBookedFalse(doctor).stream()
                 .map(s -> Map.<String, Object>of(
                         "id", s.getId(),
                         "startTime", s.getStartTime().toString(),
@@ -55,7 +55,7 @@ public class PatientService {
     }
 
     /**
-     * Book a slot – marks it as booked and creates an PENDING appointment.
+     * Book a slot – marks it as booked and creates a PENDING appointment.
      */
     @Transactional
     public Map<String, Object> bookSlot(Long slotId, String username) {
@@ -64,7 +64,12 @@ public class PatientService {
         TimeSlot slot = timeSlotRepository.findById(slotId)
                 .orElseThrow(() -> new RuntimeException("Slot not found"));
 
+        if (slot.isBooked()) {
+            throw new RuntimeException("Slot is already booked");
+        }
 
+        slot.setBooked(true);
+        timeSlotRepository.save(slot);
 
         // Calculate Queue Number (per-doctor, per-day)
         LocalDateTime dayStart = slot.getStartTime().toLocalDate().atStartOfDay();
